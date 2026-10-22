@@ -33,11 +33,14 @@ app.get('/', (req, res) => {
 app.get('/api/health', async (req, res) => {
     try {
         const db = require('./config/database');
-        const [rows] = await db.execute('SELECT 1 as connected');
+        const [dbs] = await db.execute('SHOW DATABASES');
+        const [currentDb] = await db.execute('SELECT DATABASE() as current_db');
         const [tables] = await db.execute('SHOW TABLES');
         res.json({ 
             status: 'ok', 
             database: 'connected', 
+            current_db: currentDb[0]?.current_db,
+            all_databases: dbs.map(d => Object.values(d)[0]),
             tables: tables.map(t => Object.values(t)[0]) 
         });
     } catch (err) {
