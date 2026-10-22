@@ -29,6 +29,26 @@ app.get('/', (req, res) => {
     res.json({ message: 'Selamat datang di API LaporWarga' });
 });
 
+// Endpoint status kesehatan database
+app.get('/api/health', async (req, res) => {
+    try {
+        const db = require('./config/database');
+        const [rows] = await db.execute('SELECT 1 as connected');
+        const [tables] = await db.execute('SHOW TABLES');
+        res.json({ 
+            status: 'ok', 
+            database: 'connected', 
+            tables: tables.map(t => Object.values(t)[0]) 
+        });
+    } catch (err) {
+        res.status(500).json({ 
+            status: 'error', 
+            message: err.message, 
+            code: err.code 
+        });
+    }
+});
+
 // Port server
 const PORT = process.env.PORT || 5000;
 
