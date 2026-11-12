@@ -18,6 +18,6 @@ router.get('/tugas/:id', petugasController.getDetailTugas);
 router.put('/tugas/:id/mulai', petugasController.mulaiKerjakan);
 
 // Menyelesaikan tugas dengan upload foto bukti
-router.post('/tugas/:id/selesai', upload.single('foto_bukti'), upToCloudinary, petugasController.selesaiKerjakan);
+router.post('/tugas/:id/selesai', upload.single('foto_bukti'), uploadToCloudinary, petugasController.selesaiKerjakan);
 
 module.exports = router;
