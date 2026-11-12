@@ -3,6 +3,7 @@ const router = express.Router();
 const pengaduanController = require('../controllers/pengaduanController');
 const { verifyToken } = require('../middleware/auth');
 const upload = require('../middleware/upload');
+const { uploadToCloudinary } = upload;
 
 // Semua rute pengaduan wajib menyertakan token (harus login)
 router.use(verifyToken);
@@ -11,7 +12,7 @@ router.use(verifyToken);
 router.get('/kategori', pengaduanController.getKategori);
 
 // Rute untuk membuat pengaduan baru dengan upload file ('foto' adalah nama field di form)
-router.post('/', upload.single('foto'), pengaduanController.createPengaduan);
+router.post('/', upload.single('foto'), uploadToCloudinary, pengaduanController.createPengaduan);
 
 // Rute untuk mengambil semua pengaduan milik user yang sedang login
 router.get('/', pengaduanController.getPengaduanUser);

@@ -3,6 +3,7 @@ const router = express.Router();
 const petugasController = require('../controllers/petugasController');
 const { verifyToken, isPetugas } = require('../middleware/auth');
 const upload = require('../middleware/upload');
+const { uploadToCloudinary } = upload;
 
 // Melindungi semua rute petugas dengan verifikasi token dan pengecekan role petugas
 router.use(verifyToken, isPetugas);
@@ -17,6 +18,6 @@ router.get('/tugas/:id', petugasController.getDetailTugas);
 router.put('/tugas/:id/mulai', petugasController.mulaiKerjakan);
 
 // Menyelesaikan tugas dengan upload foto bukti
-router.post('/tugas/:id/selesai', upload.single('foto_bukti'), petugasController.selesaiKerjakan);
+router.post('/tugas/:id/selesai', upload.single('foto_bukti'), upToCloudinary, petugasController.selesaiKerjakan);
 
 module.exports = router;
